@@ -45,7 +45,7 @@ def crypto(update: Update, context: CallbackContext):
     ]
 
     try:
-        url = f'https://x.wazirx.com/wazirx-falcon/api/v2.0/crypto_rates'
+        url = 'https://x.wazirx.com/wazirx-falcon/api/v2.0/crypto_rates'
         result = requests.get(url).json()
     except Exception:
         return message.reply_text("[ERROR]: Something went wrong.")
@@ -58,10 +58,7 @@ def crypto(update: Update, context: CallbackContext):
 
     body = {i.upper(): j for i, j in result.get(currency).items()}
 
-    text = section(
-        "Current Crypto Rates For " + currency.upper(),
-        body,
-    )
+    text = section(f"Current Crypto Rates For {currency.upper()}", body)
     update.effective_message.reply_text(text, reply_markup=InlineKeyboardMarkup(buttons), parse_mode=ParseMode.MARKDOWN)
 
 CRYPTO_HANDLER = CommandHandler("crypto", crypto, run_async=True)

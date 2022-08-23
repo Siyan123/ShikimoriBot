@@ -8,8 +8,8 @@ class client:
     def __init__():
         pass
 
-    def search(anime_name):
-        r = requests.get(base_url + '/anime?search=' + anime_name)
+    def search(self):
+        r = requests.get(f'{base_url}/anime?search={self}')
         if r.status_code == 404:
             raise exceptions.NotFound('Not Found.')
         elif r.status_code != 200:

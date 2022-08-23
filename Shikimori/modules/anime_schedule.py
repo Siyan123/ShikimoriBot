@@ -36,14 +36,15 @@ def schedule(_, message):
         title = result['title']
         time = result['time']
         aired = bool(result['aired'])
-        title = f"**[{title}](https://subsplease.org/shows/{result['page']})**" if not aired else f"**~~[{title}](https://subsplease.org/shows/{result['page']})~~**"
-        data = f"{title} - **{time}**"
-        
-        if text:
-            text = f"{text}\n{data}"
-        else:
-            text = data
+        title = (
+            f"**~~[{title}](https://subsplease.org/shows/{result['page']})~~**"
+            if aired
+            else f"**[{title}](https://subsplease.org/shows/{result['page']})**"
+        )
 
+        data = f"{title} - **{time}**"
+
+        text = f"{text}\n{data}" if text else data
     message.reply_text(f"**Today's Schedule:**\nTime-Zone: Tokyo (GMT +9)\n\n{text}")
 
 

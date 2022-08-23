@@ -69,7 +69,7 @@ async def _(event):
                     lool = lool + 1
                 for ts in td.find_all("a", attrs={"href": re.compile("^/book/")}):
                     ref = ts.get("href")
-                    link = "https://b-ok.cc" + ref
+                    link = f"https://b-ok.cc{ref}"
 
                 f.write("\n" + title)
                 f.write("\nBook link:- " + link + "\n\n")
@@ -80,8 +80,9 @@ async def _(event):
         await tbot.send_file(
             event.chat_id,
             "book.txt",
-            caption=f"**BOOKS GATHERED SUCCESSFULLY!**",
+            caption="**BOOKS GATHERED SUCCESSFULLY!**",
         )
+
         os.remove("book.txt")
         await KkK.delete()
 

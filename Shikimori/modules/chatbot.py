@@ -28,70 +28,54 @@ def chatbot_status(update: Update, context: CallbackContext):
     user = update.effective_user
     if query.data == "add_chatbot":
         chat = update.effective_chat
-        is_chatbot = sql.is_chatbot(chat.id)
-        if not is_chatbot:
-            is_chatbot = sql.add_chatbot(chat.id)
-            LOG = (
-                f"<b>{html.escape(chat.title)}:</b>\n"
-                f"AI_ENABLE\n"
-                f"<b>Admin:</b> {mention_html(user.id, html.escape(user.first_name))}\n"
-            )
-            log_channel = logsql.get_chat_log_channel(chat.id)
-            if log_channel:
-                bot.send_message(
-                log_channel,
-                LOG,
-                parse_mode=ParseMode.HTML,
-                disable_web_page_preview=True,
-            )
-            update.effective_message.edit_text(
-                f"{bot_name} Chatbot Enabled by {mention_html(user.id, user.first_name)}.",
-                parse_mode=ParseMode.HTML,
-            )
-            return LOG
-        elif is_chatbot:
+        if is_chatbot := sql.is_chatbot(chat.id):
             return update.effective_message.edit_text(
                 f"{bot_name} Chatbot Already Enabled.",
                 parse_mode=ParseMode.HTML,
             )
-        else:
-            return update.effective_message.edit_text(
-                "Error!",
-                parse_mode=ParseMode.HTML,
-            )
-    elif query.data == "rem_chatbot":
-        chat = update.effective_chat
-        is_chatbot = sql.is_chatbot(chat.id)
-        if is_chatbot:
-            is_chatbot = sql.rm_chatbot(chat.id)
-            LOG = (
-                f"<b>{html.escape(chat.title)}:</b>\n"
-                f"AI_DISABLE\n"
-                f"<b>Admin:</b> {mention_html(user.id, html.escape(user.first_name))}\n"
-            )
-            log_channel = logsql.get_chat_log_channel(chat.id)
-            if log_channel:
+        is_chatbot = sql.add_chatbot(chat.id)
+        LOG = (
+            f"<b>{html.escape(chat.title)}:</b>\n"
+            f"AI_ENABLE\n"
+            f"<b>Admin:</b> {mention_html(user.id, html.escape(user.first_name))}\n"
+        )
+        if log_channel := logsql.get_chat_log_channel(chat.id):
                 bot.send_message(
                 log_channel,
                 LOG,
                 parse_mode=ParseMode.HTML,
                 disable_web_page_preview=True,
             )
-            update.effective_message.edit_text(
-                f"{bot_name} Chatbot disabled by {mention_html(user.id, user.first_name)}.",
-                parse_mode=ParseMode.HTML,
-            )
-            return LOG
-        elif not is_chatbot:
+        update.effective_message.edit_text(
+            f"{bot_name} Chatbot Enabled by {mention_html(user.id, user.first_name)}.",
+            parse_mode=ParseMode.HTML,
+        )
+        return LOG
+    elif query.data == "rem_chatbot":
+        chat = update.effective_chat
+        if not (is_chatbot := sql.is_chatbot(chat.id)):
             return update.effective_message.edit_text(
                 f"{bot_name} Chatbot Already Disabled.",
                 parse_mode=ParseMode.HTML,
             )
-        else:
-            return update.effective_message.edit_text(
-                "Error!",
+        is_chatbot = sql.rm_chatbot(chat.id)
+        LOG = (
+            f"<b>{html.escape(chat.title)}:</b>\n"
+            f"AI_DISABLE\n"
+            f"<b>Admin:</b> {mention_html(user.id, html.escape(user.first_name))}\n"
+        )
+        if log_channel := logsql.get_chat_log_channel(chat.id):
+                bot.send_message(
+                log_channel,
+                LOG,
                 parse_mode=ParseMode.HTML,
+                disable_web_page_preview=True,
             )
+        update.effective_message.edit_text(
+            f"{bot_name} Chatbot disabled by {mention_html(user.id, user.first_name)}.",
+            parse_mode=ParseMode.HTML,
+        )
+        return LOG
 
 @user_admin
 @loggable
@@ -113,8 +97,7 @@ def chatbot(update: Update, context: CallbackContext):
     )
 
 def bot_message(context: CallbackContext, message):
-    reply_message = message.reply_to_message
-    if reply_message:
+    if reply_message := message.reply_to_message:
         if reply_message.from_user.id == context.bot.get_me().id:
             return True
     else:
@@ -127,13 +110,16 @@ def chatbot_msg(update: Update, context: CallbackContext):
     is_chatbot = sql.is_chatbot(chat_id)
     if not is_chatbot:
         return
-	
+
     if message.text and not message.document:
         if not bot_message(context, message):
             return
         Message = message.text
         bot.send_chat_action(chat_id, action="typing")
-        chatbot = requests.get('https://itsprodev.cf/chatbot/SOME1HING.php?api=' + api + '&message=' + Message)
+        chatbot = requests.get(
+            f'https://itsprodev.cf/chatbot/SOME1HING.php?api={api}&message={Message}'
+        )
+
         Chat = json.loads(chatbot.text)
         Chat = Chat['reply']
         sleep(0.3)

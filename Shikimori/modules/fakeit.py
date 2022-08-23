@@ -52,7 +52,7 @@ async def hi(event):
 @pbot.on_message(filters.command('picgen'))
 async def picgen(_, message):
     img = "https://thispersondoesnotexist.com/image"
-    text = f"Fake Image successfully generated."
+    text = "Fake Image successfully generated."
     await message.reply_photo(photo=img, caption=text)
 
 

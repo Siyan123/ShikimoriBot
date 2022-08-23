@@ -46,7 +46,7 @@ def bug(update: Update, context: CallbackContext):
         if update.effective_chat.type == "private":
             update.effective_message.reply_text(f"❎ *This command only works in public groups.*\n\n Visit @{SUPPORT_CHAT} to report bugs related to bot's pm.", parse_mode=ParseMode.MARKDOWN)
             return
-        
+
         if len(args) >= 2:
             bugs = args[1]
             if message.chat.username:
@@ -57,10 +57,12 @@ def bug(update: Update, context: CallbackContext):
                 return
         else:
             message.reply_text(
-                    f"❎ *No bug to Report!* Use `/bug <information>`", parse_mode=ParseMode.MARKDOWN
-                )
+                "❎ *No bug to Report!* Use `/bug <information>`",
+                parse_mode=ParseMode.MARKDOWN,
+            )
+
             return
-            
+
         first_name = update.effective_user.first_name
         user = message.from_user
         mention = f'<a href="tg://user?id={user.id}">{first_name}</a>'

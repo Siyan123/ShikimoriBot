@@ -48,16 +48,15 @@ def afk(update, context):
         return
 
     start_afk_time = time.time()
-    if len(args) >= 2:
-        reason = args[1]
-    else:
-        reason = "none"
+    reason = args[1] if len(args) >= 2 else "none"
     start_afk(update.effective_user.id, reason)
     REDIS.set(f'afk_time_{update.effective_user.id}', start_afk_time)
     fname = update.effective_user.first_name
     try:
         Shikimori = update.effective_message.reply_text(
-            "*{}* is now AFK! GoodBye!".format(fname), parse_mode=ParseMode.MARKDOWN)
+            f"*{fname}* is now AFK! GoodBye!", parse_mode=ParseMode.MARKDOWN
+        )
+
         time.sleep(5)
         try:
             Shikimori.delete()
@@ -76,19 +75,21 @@ def no_longer_afk(update, context):
         return
     end_afk_time = get_readable_time((time.time() - float(REDIS.get(f'afk_time_{user.id}'))))
     REDIS.delete(f'afk_time_{user.id}')
-    res = end_afk(user.id)
-    if res:
+    if res := end_afk(user.id):
         if message.new_chat_members:  #dont say msg
             return
         firstname = update.effective_user.first_name
         try:
-             Shikimori = message.reply_text(
-                "*{}* is back in the chat!\nCame back after: `{}`".format(firstname, end_afk_time), parse_mode=ParseMode.MARKDOWN)
-             time.sleep(5)
-             try:
-                 Shikimori.delete()
-             except BadRequest:
-                 pass
+            Shikimori = message.reply_text(
+                f"*{firstname}* is back in the chat!\nCame back after: `{end_afk_time}`",
+                parse_mode=ParseMode.MARKDOWN,
+            )
+
+            time.sleep(5)
+            try:
+                Shikimori.delete()
+            except BadRequest:
+                pass
         except Exception:
             return
 
@@ -126,8 +127,7 @@ def reply_afk(update, context):
                 try:
                     chat = context.bot.get_chat(user_id)
                 except BadRequest:
-                    print("Error: Could not fetch userid {} for AFK module".
-                          format(user_id))
+                    print(f"Error: Could not fetch userid {user_id} for AFK module")
                     return
                 fst_name = chat.first_name
 
@@ -143,24 +143,24 @@ def reply_afk(update, context):
 
 
 def check_afk(update, context, user_id, fst_name, userc_id):
-    if is_user_afk(user_id):
-        reason = afk_reason(user_id)
-        since_afk = get_readable_time((time.time() - float(REDIS.get(f'afk_time_{user_id}'))))
-        if reason == "none":
-            if int(userc_id) == int(user_id):
-                return
-            res = "*{}* is busy right now!\nSince: `{}`".format(fst_name, since_afk)
-            update.effective_message.reply_text(res, parse_mode=ParseMode.MARKDOWN)
-        else:
-            if int(userc_id) == int(user_id):
-                return
-            res = "*{}* is busy right now!\n*Reason*: `{}`\n*Away Time*: `{}`".format(fst_name, reason, since_afk)
-            Shikimori = update.effective_message.reply_text(res, parse_mode=ParseMode.MARKDOWN)
-            time.sleep(5)
-            try:
-                Shikimori.delete()
-            except BadRequest:
-                pass
+    if not is_user_afk(user_id):
+        return
+    reason = afk_reason(user_id)
+    since_afk = get_readable_time((time.time() - float(REDIS.get(f'afk_time_{user_id}'))))
+    if int(userc_id) == int(user_id):
+        return
+    if reason == "none":
+        res = f"*{fst_name}* is busy right now!\nSince: `{since_afk}`"
+        update.effective_message.reply_text(res, parse_mode=ParseMode.MARKDOWN)
+    else:
+        res = f"*{fst_name}* is busy right now!\n*Reason*: `{reason}`\n*Away Time*: `{since_afk}`"
+
+        Shikimori = update.effective_message.reply_text(res, parse_mode=ParseMode.MARKDOWN)
+        time.sleep(5)
+        try:
+            Shikimori.delete()
+        except BadRequest:
+            pass
 
 def __user_info__(user_id):
     is_afk = is_user_afk(user_id)

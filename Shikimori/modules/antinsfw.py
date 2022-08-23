@@ -152,20 +152,20 @@ async def del_profanity(event):
         return
     chats = antislang_chats.find({})
     for c in chats:
-        if event.text:
-            if event.chat_id == c["id"]:
-                if better_profanity.profanity.contains_profanity(msg):
-                    await event.delete()
-                    if sender.username is None:
-                        st = sender.first_name
-                        hh = sender.id
-                        final = f"[{st}](tg://user?id={hh}) used word: **{msg}** which is detected as a slang word and his message has been deleted."
-                    else:
-                        final = f"[{st}](tg://user?id={hh}) used word: **{msg}** which is detected as a slang word and his message has been deleted."
-                    dev = await event.respond(final)
-                    await asyncio.sleep(10)
-                    await dev.delete()
-                    return dev
+        if (
+            event.text
+            and event.chat_id == c["id"]
+            and better_profanity.profanity.contains_profanity(msg)
+        ):
+            await event.delete()
+            if sender.username is None:
+                st = sender.first_name
+                hh = sender.id
+            final = f"[{st}](tg://user?id={hh}) used word: **{msg}** which is detected as a slang word and his message has been deleted."
+            dev = await event.respond(final)
+            await asyncio.sleep(10)
+            await dev.delete()
+            return dev
 
 
 
@@ -192,8 +192,7 @@ async def del_nsfw(_, message):
             return
         if user.id in DRAGONS:
             return
-        is_nsfw = sql.is_nsfw(chat_id)
-        if is_nsfw:
+        if is_nsfw := sql.is_nsfw(chat_id):
             return
         if chat_id == c["id"]:
             file_id = await get_file_id_from_message(message)
@@ -214,14 +213,13 @@ async def del_nsfw(_, message):
                     await asyncio.sleep(10)
                     await dev.delete()
                     try:
-                        log_channel = logsql.get_chat_log_channel(chat_id)
-                        if log_channel:
+                        if log_channel := logsql.get_chat_log_channel(chat_id):
                             await pbot.send_message(
                                 log_channel,
                                 f"{final}"
                             )
-                        return 
+                        return
                     except Exception as e:
-                        return print("anti-nsfw-log - " + str(e))
+                        return print(f"anti-nsfw-log - {str(e)}")
             except Exception as e:
-                return print("anti-nsfw - " + str(e))
+                return print(f"anti-nsfw - {str(e)}")

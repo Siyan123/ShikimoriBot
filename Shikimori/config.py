@@ -5,7 +5,7 @@ import os
 from Shikimori.vars import HEROKU_API_KEY, HEROKU_APP_NAME, REDIS_URL
 
 def get_user_list(config, key):
-    with open("{}/Senku/{}".format(os.getcwd(), config), "r") as json_file:
+    with open(f"{os.getcwd()}/Senku/{config}", "r") as json_file:
         return json.load(json_file)[key]
 
 

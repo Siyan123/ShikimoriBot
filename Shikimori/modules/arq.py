@@ -43,7 +43,7 @@ async def ytarq(_, message):
         videos = hmm.result[0]
         thumbs = videos["thumbnails"]
         thumb= thumbs[0]
-        thumb = thumb + ".jpg"
+        thumb = f"{thumb}.jpg"
         title = videos["title"]
         channel = videos["channel"]
         Duration = videos["duration"]
@@ -64,7 +64,7 @@ async def ytarq(_, message):
             ],]
         await m.delete()
         return await message.reply_photo(thumb ,caption = text, reply_markup=InlineKeyboardMarkup(buttons))
-    
+
     except:
         await m.edit(f"ERROR!!! Contact @{SUPPORT_CHAT}")
 
@@ -102,7 +102,7 @@ async def phub(_, message):
         result = hmm.result[0]
         thumbs = result["thumbnails"]
         thumb= thumbs[0]
-        thumb = thumb + ".jpg"
+        thumb = f"{thumb}.jpg"
         title = result["title"]
         rating = result["rating"]
         Duration = result["duration"]
@@ -128,6 +128,6 @@ async def phub(_, message):
         return await message.reply_photo(thumb ,caption = text, 
         #reply_markup=InlineKeyboardMarkup(buttons)
         )
-    
+
     except:
         await m.edit(f"ERROR!!! Contact @{SUPPORT_CHAT}")

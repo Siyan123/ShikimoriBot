@@ -74,9 +74,8 @@ def github(update: Update, context: CallbackContext):
                 ],
             ), parse_mode=ParseMode.MARKDOWN)
     except Exception as e:
-        print(str(e))
+        print(e)
         update.effective_message.reply_text(f"ERROR!! Contact @{SUPPORT_CHAT}")
-        pass
 
 git_handler = CommandHandler(("git", "github"), github, run_async = True)
 dispatcher.add_handler(git_handler)

@@ -34,7 +34,7 @@ def ann(update, context):
     try:
         msg = update.effective_message
         # API (DON'T EDIT)
-        url = f'https://api.animeepisode.org/waifu/animenews.php'
+        url = 'https://api.animeepisode.org/waifu/animenews.php'
         result = requests.get(url).json()
         img = result['Post_image']
         # Message (EDIT THIS PART AS HTML *IF YOU WANT*)
@@ -48,7 +48,7 @@ def ann(update, context):
         msg.reply_photo(photo=img, caption=text, parse_mode=ParseMode.HTML)
 
     except Exception as e:
-        text = f'<b>Error</b>: <code>' + e + '</code>'
+        text = f'<b>Error</b>: <code>{e}</code>'
         msg.reply_text(text, parse_mode=ParseMode.HTML)
 
 # Code Handler (YOU CAN CHANGE 'ann' TO ANY 'cmd' FOR THIS TO BE WORKED AS '/cmd' *IF YOU WANT*.)

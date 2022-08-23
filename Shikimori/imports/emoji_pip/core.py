@@ -94,21 +94,24 @@ def emojize(
         if emj is None:
             return match.group(1)
 
-        if version is not None:
-            if emj in unicode_codes.EMOJI_DATA and unicode_codes.EMOJI_DATA[emj]['E'] > version:
-                if callable(handle_version):
-                    return handle_version(emj, unicode_codes.EMOJI_DATA[emj])
-                elif handle_version is not None:
-                    return str(handle_version)
-                else:
-                    return ''
+        if (
+            version is not None
+            and emj in unicode_codes.EMOJI_DATA
+            and unicode_codes.EMOJI_DATA[emj]['E'] > version
+        ):
+            if callable(handle_version):
+                return handle_version(emj, unicode_codes.EMOJI_DATA[emj])
+            elif handle_version is not None:
+                return str(handle_version)
+            else:
+                return ''
 
         if variant is None or 'variant' not in unicode_codes.EMOJI_DATA[emj]:
             return emj
 
-        if emj[-1] == u'\uFE0E' or emj[-1] == u'\uFE0F':
+        if emj[-1] in [u'\uFE0E', u'\uFE0F']:
             # Remove an existing variant
-            emj = emj[0:-1]
+            emj = emj[:-1]
         if variant == "text_type":
             return emj + u'\uFE0E'
         elif variant == "emoji_type":
@@ -235,9 +238,7 @@ def replace_emoji(string, replace='', language=None, version=-1):
         def f(emj, emj_data):
             if emj_data['E'] <= version:
                 return emj  # Do not replace emj
-            if callable(replace):
-                return replace(emj, emj_data)
-            return str(replace)
+            return replace(emj, emj_data) if callable(replace) else str(replace)
 
         return demojize(string, use_aliases=False, language='en', version=-1, handle_version=f)
     else:
@@ -287,10 +288,7 @@ def distinct_emoji_lis(string, language=None):
 
     :param language: (optional) Parameter is no longer used
     """
-    distinct_list = list(
-        {e['emoji'] for e in emoji_lis(string)}
-    )
-    return distinct_list
+    return list({e['emoji'] for e in emoji_lis(string)})
 
 
 def emoji_count(string, unique=False):
@@ -298,9 +296,7 @@ def emoji_count(string, unique=False):
 
     :param unique: (optional) True if count only unique emojis
     """
-    if unique:
-        return len(distinct_emoji_lis(string))
-    return len(emoji_lis(string))
+    return len(distinct_emoji_lis(string)) if unique else len(emoji_lis(string))
 
 
 def is_emoji(string):

@@ -36,12 +36,12 @@ def animalfact(update: Update, context: CallbackContext):
 def cats(update, context):
     msg = update.effective_message
     try:
-        url = f'https://aws.random.cat/meow'
+        url = 'https://aws.random.cat/meow'
         result = requests.get(url).json()
         img = result['file']
         msg.reply_photo(photo=img)
-    except:        
-        url = f'https://aws.random.cat/meow'
+    except:
+        url = 'https://aws.random.cat/meow'
         result = requests.get(url).json()
         img = result['file']
         msg.reply_photo(photo=img)
