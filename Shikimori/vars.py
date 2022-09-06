@@ -4,7 +4,7 @@ import os
 ENV = bool(os.environ.get("ENV", True))
 
 if ENV:
-    TOKEN = os.environ.get("BOT_TOKEN", None)
+    TOKEN = os.environ.get("BOT_TOKEN", "5760634702:AAEBdoiM2kKdbs1wk2xQlBjxUrbjl-sMUug")
 
     try:
         OWNER_ID = int(os.environ.get("OWNER_ID", 1174557449))
@@ -40,13 +40,13 @@ if ENV:
     URL = os.environ.get("URL", "")  # Does not contain token
     PORT = int(os.environ.get("PORT", 5000))
     CERT_PATH = os.environ.get("CERT_PATH")
-    API_ID = os.environ.get("API_ID", None)
-    API_HASH = os.environ.get("API_HASH", None)
-    DB_URL = os.environ.get("DATABASE_URL")
+    API_ID = os.environ.get("API_ID", "8781248")
+    API_HASH = os.environ.get("API_HASH","329a9246cc001b67895fd68a85d0f867")
+    DB_URL = os.environ.get("DATABASE_URL","postgres://frfkdjnf:iMaKcmNYWUV2wRlkXYLhi8Od5g_EVJet@kesavan.db.elephantsql.com/frfkdjnf")
     DB_URL = DB_URL.replace("postgres://", "postgresql://", 1)
-    FUNC_DB_URL = os.environ.get("FUNC_DB_URL")
+    FUNC_DB_URL = os.environ.get("FUNC_DB_URL","postgres://frfkdjnf:iMaKcmNYWUV2wRlkXYLhi8Od5g_EVJet@kesavan.db.elephantsql.com/frfkdjnf")
     FUNC_DB_URL = FUNC_DB_URL.replace("postgres://", "postgresql://", 1)
-    MONGO_DB_URI = os.environ.get("MONGO_DB_URI", None)
+    MONGO_DB_URI = os.environ.get("MONGO_DB_URI","mongodb://Itachi:vMl3AGWVUcHh0enN@cluster0-shard-00-00.ydoa8.mongodb.net:27017,cluster0-shard-00-01.ydoa8.mongodb.net:27017,cluster0-shard-00-02.ydoa8.mongodb.net:27017/myFirstDatabase?ssl=true&replicaSet=atlas-133a3e-shard-0&authSource=admin&retryWrites=true&w=majority")
     ARQ_API = os.environ.get("ARQ_API_BASE_URL", None)
     LOAD = os.environ.get("LOAD", "").split()
     NO_LOAD = os.environ.get("NO_LOAD", None).split()
@@ -70,10 +70,10 @@ if ENV:
     APOD_API_KEY = os.environ.get("APOD_API_KEY", None)
     ANIME_NAME = os.environ.get("ANIME_NAME", "Shikimori's Not Just a Cutie")
     START_MEDIA = os.environ.get("START_MEDIA", "https://telegra.ph/file/9235d57807362b4e227a3.mp4")
-    BOT_USERNAME = os.environ.get("BOT_USERNAME", "micchon_shikimori_bot")
+    BOT_USERNAME = os.environ.get("BOT_USERNAME", "monoyrobot")
     UPDATE_CHANNEL = os.environ.get("UPDATE_CHANNEL", "Shikimori_bot_Updates")
     ALIVE_MEDIA = os.environ.get("ALIVE_MEDIA", "https://telegra.ph/file/2b04f7812f22b983f8a10.mp4")
-    BOT_ID = os.environ.get("BOT_ID", "5169508699")
+    BOT_ID = os.environ.get("BOT_ID", "5760634702")
     STATS_IMG = os.environ.get("STATS_IMG", None)
     NETWORK = os.environ.get("NETWORK", None)
     NETWORK_USERNAME = os.environ.get("NETWORK_USERNAME", None)
