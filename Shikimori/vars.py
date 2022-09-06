@@ -49,7 +49,7 @@ if ENV:
     MONGO_DB_URI = os.environ.get("MONGO_DB_URI","mongodb://Itachi:vMl3AGWVUcHh0enN@cluster0-shard-00-00.ydoa8.mongodb.net:27017,cluster0-shard-00-01.ydoa8.mongodb.net:27017,cluster0-shard-00-02.ydoa8.mongodb.net:27017/myFirstDatabase?ssl=true&replicaSet=atlas-133a3e-shard-0&authSource=admin&retryWrites=true&w=majority")
     ARQ_API = os.environ.get("ARQ_API_BASE_URL", None)
     LOAD = os.environ.get("LOAD", "").split()
-    NO_LOAD = os.environ.get("NO_LOAD", None).split()
+    NO_LOAD = os.environ.get("NO_LOAD", "").split()
     DEL_CMDS = bool(os.environ.get("DEL_CMDS", False))
     STRICT_GBAN = bool(os.environ.get("STRICT_GBAN", False))
     WORKERS = int(os.environ.get("WORKERS", 8))
