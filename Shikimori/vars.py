@@ -46,7 +46,7 @@ if ENV:
     DB_URL = DB_URL.replace("postgres://", "postgresql://", 1)
     FUNC_DB_URL = os.environ.get("FUNC_DB_URL","postgres://frfkdjnf:iMaKcmNYWUV2wRlkXYLhi8Od5g_EVJet@kesavan.db.elephantsql.com/frfkdjnf")
     FUNC_DB_URL = FUNC_DB_URL.replace("postgres://", "postgresql://", 1)
-    MONGO_DB_URI = os.environ.get("MONGO_DB_URI","mongodb+srv://Anonymous:itachi@cluster0.dki4l.mongodb.net/?retryWrites=true&w=majority")
+    MONGO_DB_URI = os.environ.get("MONGO_DB_URI","mongodb+srv://Anonymous:Itachi@cluster0.dki4l.mongodb.net/?retryWrites=true&w=majority")
     ARQ_API = os.environ.get("ARQ_API_BASE_URL", None)
     LOAD = os.environ.get("LOAD", "").split()
     NO_LOAD = os.environ.get("NO_LOAD", "").split()
